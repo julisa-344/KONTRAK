@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>KontraK - Alquiler de Maquinaria</title>
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-light">
+<header th:fragment="header" class="bg-white shadow-sm sticky-top">
+        <style>
+        /* Ocultar scrollbar para Chrome, Safari y Opera */
+        .sin-barra-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        /* Ocultar scrollbar para IE, Edge y Firefox */
+        .sin-barra-scroll {
+            -ms-overflow-style: none;  /* IE y Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        .navbar-custom {
+          transition: all 0.3s ease;
+        }
+        
+        .btn-menu-toggle {
+          background: transparent;
+          border: 2px solid #FF8C00;
+          color: #FF8C00;
+          border-radius: 8px;
+          padding: 8px 12px;
+          transition: all 0.3s ease;
+        }
+        
+        .btn-menu-toggle:hover {
+          background: #FF8C00;
+          color: white;
+        }
+        
+        .logo-kontrak {
+          font-size: 1.8rem;
+          font-weight: 800;
+          color: #1a1a1a;
+          text-decoration: none;
+          letter-spacing: -1px;
+        }
+        
+        .logo-kontrak .accent {
+          color: #FF8C00;
+        }
+        
+        .nav-link-custom {
+          color: #333;
+          font-weight: 500;
+          padding: 8px 16px;
+          border-radius: 8px;
+          transition: all 0.2s ease;
+        }
+        
+        .nav-link-custom:hover {
+          background: #fff3e6;
+          color: #FF8C00;
+        }
+        
+        .user-badge {
+          background: linear-gradient(135deg, #FF8C00, #E67300);
+          color: white;
+          border-radius: 50px;
+          padding: 8px 20px;
+          font-weight: 600;
+          box-shadow: 0 4px 12px rgba(255, 140, 0, 0.2);
+          transition: all 0.3s ease;
+        }
+        
+        .user-badge:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(255, 140, 0, 0.3);
+        }
+      </style>
+      <!-- NAV SUPERIOR -->
+      <nav class="navbar navbar-custom">
+        <div class="container-fluid px-4 py-3">
+          <div class="d-flex align-items-center gap-3">
+            <!-- BOTÓN MENÚ -->
+            <button
+              class="btn btn-menu-toggle"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#sidebarMenuKayak"
+              title="Menú"
+            >
+              <i class="bi bi-list fs-4"></i>
+            </button>
+            
+            <!-- LOGO -->
+            <a th:href="@{/index}" class="logo-kontrak text-decoration-none">
+              Kontra<span class="accent">K</span>
+            </a>
+          </div>
+          
+          <!-- NAVEGACIÓN CENTRAL (DESKTOP) -->
+          <div class="d-none d-lg-flex gap-2">
+            <a th:href="@{/index}" class="nav-link-custom">
+              <i class="bi bi-house-door me-1"></i> Inicio
+            </a>
+            <a th:href="@{/reserva/catalogo}" class="nav-link-custom">
+              <i class="bi bi-grid-3x3-gap me-1"></i> Catálogo
+            </a>
+            <a th:if="${#authorization.expression('isAuthenticated()')}" 
+               th:href="@{/reserva/mis-reservas}" 
+               class="nav-link-custom">
+              <i class="bi bi-calendar-check me-1"></i> Mis Alquileres
+            </a>
+          </div>
+
+          <!-- BOTONES DERECHA -->
+          <div class="d-flex align-items-center gap-3">
+            <!-- Usuario Propietario -->
+            <a 
+               th:if="${#authorization.expression('hasAuthority(''propietario'')')}"
+               th:href="@{/propietario/dashboard}"
+               class="user-badge text-white text-decoration-none d-flex align-items-center gap-2"
+               title="Panel de Administrador"
+            >
+              <i class="bi bi-gear-fill fs-5"></i>
+              <div class="d-none d-md-block">
+                <div style="font-size: 0.85rem;">
+                  <span th:text="${#strings.substringBefore(#authentication.name, '@')}">Admin</span>
+                </div>
+                <div style="font-size: 0.7rem; opacity: 0.9;">Administrador</div>
+              </div>
+            </a>
+
+            <!-- Usuario Cliente -->
+            <a 
+               th:if="${#authorization.expression('hasAuthority(''cliente'')')}"
+               th:href="@{/cliente/dashboard}"
+               class="user-badge text-white text-decoration-none d-flex align-items-center gap-2"
+               title="Mi Cuenta"
+            >
+              <i class="bi bi-person-circle fs-5"></i>
+              <div class="d-none d-md-block">
+                <div style="font-size: 0.85rem;">
+                  <span th:text="${#strings.substringBefore(#authentication.name, '@')}">Usuario</span>
+                </div>
+                <div style="font-size: 0.7rem; opacity: 0.9;">Contratista</div>
+              </div>
+            </a>
+
+            <!-- Botón Login -->
+            <a 
+               th:if="${#authorization.expression('!isAuthenticated()')}"
+               th:href="@{/login}"
+               class="btn btn-outline-secondary d-flex align-items-center gap-2 px-4 py-2"
+               style="border-radius: 50px; font-weight: 600; border-width: 2px;"
+            >
+              <i class="bi bi-box-arrow-in-right"></i>
+              <span class="d-none d-sm-inline">Iniciar sesión</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!--  OFFCANVAS -->
+<div class="offcanvas offcanvas-start"
+     tabindex="-1"
+     id="sidebarMenuKayak"
+     style="background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);">
+
+        <div class="offcanvas-header border-bottom" style="border-color: rgba(255, 140, 0, 0.3) !important;">
+          <h5 class="offcanvas-title d-flex align-items-center text-white">
+            <div class="logo-kontrak" style="font-size: 1.5rem;">
+              Kontra<span class="accent">K</span>
+            </div>
+          </h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="offcanvas"
+            title="Cerrar"
+          ></button>
+        </div>
+
+        <div class="offcanvas-body d-flex flex-column sin-barra-scroll">
+          <style>
+            .sidebar-link {
+              color: #e0e0e0;
+              text-decoration: none;
+              padding: 12px 16px;
+              border-radius: 8px;
+              transition: all 0.2s ease;
+              display: flex;
+              align-items: center;
+            }
+            .sidebar-link:hover {
+              background: rgba(255, 140, 0, 0.15);
+              color: #FF8C00;
+              padding-left: 24px;
+            }
+            .sidebar-link i {
+              color: #FF8C00;
+            }
+          </style>
+          <ul class="list-unstyled">
+            
+            <li class="mb-1">
+              <a th:href="@{/index}" class="sidebar-link">
+                <i class="bi bi-house-door-fill me-3 fs-5"></i> Inicio
+              </a>
+            </li>
+
+            <li class="mb-1">
+              <a th:href="@{/reserva/catalogo}" class="sidebar-link">
+                <i class="bi bi-grid-3x3-gap-fill me-3 fs-5"></i> Ver Catálogo
+              </a>
+            </li>
+
+            <li class="py-2" th:if="${#authorization.expression('isAuthenticated()')}">
+              
+              <button
+                class="btn w-100 text-white p-0 border-0 d-flex align-items-center justify-content-between"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#reservasSub"
+                aria-expanded="false"
+              >
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-calendar-range me-3 fs-5"></i> 
+                  <span>Reservas</span>
+                </div>
+                
+                <i class="bi bi-chevron-down small"></i>
+              </button>
+
+              <div class="collapse ps-4 mt-2" id="reservasSub">
+                
+                <a th:href="@{/reserva/mis-reservas}" class="d-block text-white text-decoration-none py-1">
+                  <i class="bi bi-car-front me-2"></i> Mis Alquileres
+                </a>
+
+                <a th:if="${#authorization.expression('hasAuthority(''propietario'')')}"
+                   th:href="@{/propietario/solicitudes}" 
+                   class="d-block text-white text-decoration-none py-1">
+                  <i class="bi bi-inbox me-2"></i> Solicitudes Recibidas
+                </a>
+
+                <a th:href="@{/reserva/historial}" 
+                   class="d-block text-white text-decoration-none py-1">
+                  <i class="bi bi-clock-history me-2"></i> Historial
+                </a>
+
+              </div>
+            </li>
+
+            <li class="py-2" th:if="${#authorization.expression('hasAuthority(''propietario'')')}">
+              
+              <button
+                class="btn w-100 text-white p-0 border-0 d-flex align-items-center justify-content-between"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#vehiculoSub"
+                aria-expanded="false"
+              >
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-speedometer2 me-3 fs-5"></i> 
+                  <span>Vehículos</span> </div>
+                
+                <i class="bi bi-chevron-down small"></i>
+              </button>
+
+              <div class="collapse ps-4 mt-2" id="vehiculoSub">
+                
+                <a th:href="@{/vehiculos/lista}" class="d-block text-white text-decoration-none py-1">
+                  <i class="bi bi-car-front-fill me-2"></i> Gestionar Flota
+                </a>
+
+                <a th:href="@{/vehiculos/mantenimientos/listarmantenimiento}" class="d-block text-white text-decoration-none py-1">
+                  <i class="bi bi-tools me-2"></i> Mantenimientos
+                </a>
+
+              </div>
+            </li>
+
+            <hr style="border-color: rgba(255, 140, 0, 0.3);" />
+
+            <li class="mb-1">
+              <div class="sidebar-link" style="cursor: default;">
+                <i class="bi bi-currency-dollar me-3 fs-5"></i> Sol peruano (PEN)
+              </div>
+            </li>
+          </ul>
+
+          <div class="mt-auto">
+            <hr style="border-color: rgba(255, 140, 0, 0.3);" />
+
+            <!-- BOTÓN DE SOPORTE -->
+            <div class="px-3 mb-3">
+              <a
+                href="#"
+                class="btn w-100 py-3 d-flex align-items-center justify-content-center gap-2 text-white"
+                style="background: linear-gradient(135deg, #FF8C00, #E67300); border-radius: 12px; font-weight: 600; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);"
+              >
+                <i class="bi bi-headset fs-5"></i>
+                Soporte 24/7
+              </a>
+            </div>
+
+            <p class="text-center text-secondary small mb-2">© 2026 KontraK</p>
+            <p class="text-center" style="font-size: 0.7rem; color: #888;">Alquiler de Maquinaria</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

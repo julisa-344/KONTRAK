@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KontraK - Alquiler de Maquinaria de Construcción</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-orange: #FF8C00;
+        --dark-orange: #E67300;
+        --light-orange: #FFB347;
+        --dark-bg: #1a1a1a;
+        --gray-bg: #f8f9fa;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .btn-orange {
+        background-color: var(--primary-orange);
+        border-color: var(--primary-orange);
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-orange:hover {
+        background-color: var(--dark-orange);
+        border-color: var(--dark-orange);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+      }
+
+      .bg-orange {
+        background-color: var(--primary-orange);
+      }
+
+      .bg-dark-custom {
+        background-color: var(--dark-bg);
+      }
+
+      .text-orange {
+        color: var(--primary-orange);
+      }
+
+      .icon-box {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 32px;
+        transition: all 0.3s ease;
+      }
+
+      .icon-box:hover {
+        transform: scale(1.1);
+      }
+
+      .category-card {
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+      }
+
+      .category-card:hover {
+        border-color: var(--primary-orange);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      }
+
+      .stats-number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary-orange);
+      }
+
+      .process-step {
+        position: relative;
+      }
+
+      .process-number {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange));
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 auto 20px;
+      }
+
+      .hero-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23FF8C00" fill-opacity="0.05" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,144C960,149,1056,139,1152,122.7C1248,107,1344,85,1392,74.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+        background-size: cover;
+      }
+      
+      .hero-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(255, 140, 0, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+      }
+
+      .feature-icon {
+        font-size: 48px;
+        color: var(--primary-orange);
+      }
+
+      .benefit-card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        height: 100%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .benefit-card:hover {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        transform: translateY(-5px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <header th:replace="~{fragments/header :: header}"></header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section py-5">
+      <div class="container py-5 position-relative" style="z-index: 1;">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <div class="badge bg-orange text-white px-4 py-2 mb-4" style="font-size: 0.9rem;">
+              <i class="bi bi-lightning-charge-fill me-2"></i> Plataforma Líder en Alquiler
+            </div>
+            <h1 class="display-3 fw-bold mb-4" style="color: #1a1a1a;">
+              Maquinaria de <span class="text-orange">Construcción</span> al Alcance de Tu Proyecto
+            </h1>
+            <p class="lead mb-4" style="color: #555; font-size: 1.2rem;">
+              Conectamos contratistas con equipos profesionales. Alquila excavadoras, 
+              mezcladoras, compactadoras y más. Sin complicaciones, con transparencia total.
+            </p>
+            <div class="d-flex gap-3 flex-wrap">
+              <a th:href="@{/reserva/catalogo}" class="btn btn-orange btn-lg px-4">
+                <i class="bi bi-grid-3x3-gap-fill me-2"></i> Explorar Catálogo
+              </a>
+              <a href="#como-funciona" class="btn btn-outline-light btn-lg px-4">
+                <i class="bi bi-play-circle me-2"></i> Cómo Funciona
+              </a>
+            </div>
+
+            <!-- Mini Stats -->
+            <div class="row mt-5 g-4">
+              <div class="col-4">
+                <div class="text-orange fw-bold h2 mb-0">150+</div>
+                <small style="color: #666; font-weight: 500;">Equipos Disponibles</small>
+              </div>
+              <div class="col-4">
+                <div class="text-orange fw-bold h2 mb-0">98%</div>
+                <small style="color: #666; font-weight: 500;">Satisfacción</small>
+              </div>
+              <div class="col-4">
+                <div class="text-orange fw-bold h2 mb-0">24/7</div>
+                <small style="color: #666; font-weight: 500;">Soporte</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <img
+              th:src="@{/images/tijera.jpg}"
+              alt="Maquinaria de Construcción"
+              class="img-fluid rounded-4 shadow-lg"
+              style="max-height: 600px; object-fit: cover; width: 100%;"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORÍAS DE MAQUINARIA -->
+    <section class="py-5 bg-light">
+      <div class="container py-4">
+        <div class="text-center mb-5">
+          <h2 class="display-5 fw-bold mb-3">Categorías de Equipos</h2>
+          <p class="lead text-muted">Encuentra la maquinaria perfecta para tu proyecto</p>
+        </div>
+
+        <div class="row g-4">
+          <!-- Excavación -->
+          <div class="col-lg-4 col-md-6">
+            <div class="category-card bg-white rounded-4 p-4 h-100 shadow-sm">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-border-all text-orange"></i>
+              </div>
+              <h4 class="fw-bold mb-3">Excavación</h4>
+              <p class="text-muted mb-3">
+                Excavadoras hidráulicas, retroexcavadoras, miniexcavadoras y zanjadoras para movimiento de tierras.
+              </p>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-orange me-2"></i>Caterpillar 320</li>
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-orange me-2"></i>JCB 3CX</li>
+                <li><i class="bi bi-check-circle-fill text-orange me-2"></i>Komatsu PC200</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Mezcla -->
+          <div class="col-lg-4 col-md-6">
+            <div class="category-card bg-white rounded-4 p-4 h-100 shadow-sm">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-hurricane text-orange"></i>
+              </div>
+              <h4 class="fw-bold mb-3">Mezcla</h4>
+              <p class="text-muted mb-3">
+                Mezcladoras de concreto, concreteras portátiles y revolvedoras industriales para tus proyectos.
+              </p>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-orange me-2"></i>Trompos 350-500L</li>
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-orange me-2"></i>Concreteras 250L</li>
+                <li><i class="bi bi-check-circle-fill text-orange me-2"></i>Revolvedoras</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Compactación -->
+          <div class="col-lg-4 col-md-6">
+            <div class="category-card bg-white rounded-4 p-4 h-100 shadow-sm">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-layers-fill text-orange"></i>
+              </div>
+              <h4 class="fw-bold mb-3">Compactación</h4>
+              <p class="text-muted mb-3">
+                Rodillos compactadores, planchas vibratorias y apisonadoras para preparación de terrenos.
+              </p>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-orange me-2"></i>Rodillos lisos</li>
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-orange me-2"></i>Planchas vibratorias</li>
+                <li><i class="bi bi-check-circle-fill text-orange me-2"></i>Pisones motorizados</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Perforación -->
+          <div class="col-lg-4 col-md-6">
+            <div class="category-card bg-white rounded-4 p-4 h-100 shadow-sm">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-hammer text-orange"></i>
+              </div>
+              <h4 class="fw-bold mb-3">Perforación</h4>
+              <p class="text-muted mb-3">
+                Martillos demoledores, perforadores y taladros industriales para trabajos de precisión.
+              </p>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-orange me-2"></i>Martillos eléctricos</li>
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-orange me-2"></i>Rotopercutores</li>
+                <li><i class="bi bi-check-circle-fill text-orange me-2"></i>Perforadoras</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Elevación -->
+          <div class="col-lg-4 col-md-6">
+            <div class="category-card bg-white rounded-4 p-4 h-100 shadow-sm">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-arrow-up-circle-fill text-orange"></i>
+              </div>
+              <h4 class="fw-bold mb-3">Elevación</h4>
+              <p class="text-muted mb-3">
+                Montacargas, plataformas elevadoras y grúas para manejo de materiales en altura.
+              </p>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-orange me-2"></i>Montacargas 1.5-5 ton</li>
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-orange me-2"></i>Plataformas tijera</li>
+                <li><i class="bi bi-check-circle-fill text-orange me-2"></i>Grúas torre</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Ver Todo -->
+          <div class="col-lg-4 col-md-6">
+            <div class="category-card bg-orange text-white rounded-4 p-4 h-100 shadow-sm d-flex flex-column justify-content-center align-items-center text-center">
+              <div class="icon-box bg-white bg-opacity-20 mb-3">
+                <i class="bi bi-arrow-right-circle-fill text-white"></i>
+              </div>
+              <h4 class="fw-bold mb-3">¿Buscas algo específico?</h4>
+              <p class="mb-4">Explora nuestro catálogo completo con más de 150 equipos disponibles</p>
+              <a th:href="@{/reserva/catalogo}" class="btn btn-light btn-lg px-4">
+                Ver Catálogo Completo
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section id="como-funciona" class="py-5 bg-white">
+      <div class="container py-4">
+        <div class="text-center mb-5">
+          <h2 class="display-5 fw-bold mb-3">Cómo Funciona</h2>
+          <p class="lead text-muted">Alquila maquinaria en 4 simples pasos</p>
+        </div>
+
+        <div class="row g-5 mt-4">
+          <div class="col-lg-3 col-md-6">
+            <div class="process-step text-center">
+              <div class="process-number">1</div>
+              <div class="feature-icon mb-3">
+                <i class="bi bi-search"></i>
+              </div>
+              <h5 class="fw-bold mb-3">Busca el Equipo</h5>
+              <p class="text-muted">
+                Navega por nuestro catálogo y filtra por categoría, marca o características específicas.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="process-step text-center">
+              <div class="process-number">2</div>
+              <div class="feature-icon mb-3">
+                <i class="bi bi-calendar-check"></i>
+              </div>
+              <h5 class="fw-bold mb-3">Reserva Fechas</h5>
+              <p class="text-muted">
+                Selecciona las fechas de alquiler y completa el formulario de reserva en minutos.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="process-step text-center">
+              <div class="process-number">3</div>
+              <div class="feature-icon mb-3">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <h5 class="fw-bold mb-3">Confirmación</h5>
+              <p class="text-muted">
+                Recibe confirmación inmediata y coordina la entrega o recojo del equipo.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="process-step text-center">
+              <div class="process-number">4</div>
+              <div class="feature-icon mb-3">
+                <i class="bi bi-truck"></i>
+              </div>
+              <h5 class="fw-bold mb-3">Recibe y Trabaja</h5>
+              <p class="text-muted">
+                Recibe tu maquinaria lista para usar y enfócate en lo que mejor haces: construir.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESTADÍSTICAS -->
+    <section class="py-5 bg-dark-custom text-white">
+      <div class="container py-4">
+        <div class="row text-center g-4">
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-number">150+</div>
+            <h5 class="text-white-50">Equipos Disponibles</h5>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-number">500+</div>
+            <h5 class="text-white-50">Alquileres Completados</h5>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-number">98%</div>
+            <h5 class="text-white-50">Clientes Satisfechos</h5>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-number">24/7</div>
+            <h5 class="text-white-50">Soporte Disponible</h5>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section class="py-5 bg-light">
+      <div class="container py-4">
+        <div class="text-center mb-5">
+          <h2 class="display-5 fw-bold mb-3">¿Por Qué Elegir KontraK?</h2>
+          <p class="lead text-muted">Ventajas que marcan la diferencia</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="benefit-card">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-shield-fill-check text-orange" style="font-size: 32px;"></i>
+              </div>
+              <h5 class="fw-bold mb-3">Equipos Certificados</h5>
+              <p class="text-muted mb-0">
+                Toda nuestra maquinaria cuenta con mantenimiento preventivo y certificaciones de seguridad vigentes.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="benefit-card">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-cash-coin text-orange" style="font-size: 32px;"></i>
+              </div>
+              <h5 class="fw-bold mb-3">Precios Competitivos</h5>
+              <p class="text-muted mb-0">
+                Tarifas justas sin costos ocultos. Paga solo por los días que realmente necesites el equipo.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="benefit-card">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-headset text-orange" style="font-size: 32px;"></i>
+              </div>
+              <h5 class="fw-bold mb-3">Soporte Técnico</h5>
+              <p class="text-muted mb-0">
+                Asistencia técnica disponible 24/7 para resolver cualquier inconveniente durante el alquiler.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="benefit-card">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-clock-history text-orange" style="font-size: 32px;"></i>
+              </div>
+              <h5 class="fw-bold mb-3">Entrega Rápida</h5>
+              <p class="text-muted mb-0">
+                Coordinamos la entrega en tu obra en el horario que mejor te convenga, sin demoras.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="benefit-card">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-file-text text-orange" style="font-size: 32px;"></i>
+              </div>
+              <h5 class="fw-bold mb-3">Proceso Transparente</h5>
+              <p class="text-muted mb-0">
+                Sin letra pequeña. Contratos claros con todos los términos y condiciones explicados.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="benefit-card">
+              <div class="icon-box bg-orange bg-opacity-10 mb-3">
+                <i class="bi bi-people-fill text-orange" style="font-size: 32px;"></i>
+              </div>
+              <h5 class="fw-bold mb-3">Comunidad de Contratistas</h5>
+              <p class="text-muted mb-0">
+                Únete a una red de profesionales que impulsan sus negocios con KontraK.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="py-5 bg-orange text-white">
+      <div class="container py-5">
+        <div class="row align-items-center">
+          <div class="col-lg-8 mb-4 mb-lg-0">
+            <h2 class="display-5 fw-bold mb-3">¿Listo para Impulsar tu Proyecto?</h2>
+            <p class="lead mb-0">
+              Únete a cientos de contratistas que ya confían en KontraK para sus obras. 
+              Comienza a alquilar hoy mismo.
+            </p>
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <a th:href="@{/reserva/catalogo}" class="btn btn-light btn-lg px-5 py-3">
+              <i class="bi bi-arrow-right-circle-fill me-2"></i> Explorar Ahora
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark-custom text-white py-5">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6">
+            <h5 class="fw-bold mb-3 text-orange">KontraK</h5>
+            <p class="text-white-50 mb-3">
+              La plataforma líder en alquiler de maquinaria de construcción. 
+              Conectamos contratistas con equipos profesionales.
+            </p>
+            <div class="d-flex gap-3">
+              <a href="#" class="text-white-50 fs-5"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="text-white-50 fs-5"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="text-white-50 fs-5"><i class="bi bi-linkedin"></i></a>
+              <a href="#" class="text-white-50 fs-5"><i class="bi bi-twitter"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6">
+            <h6 class="fw-bold mb-3">Empresa</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Nosotros</a></li>
+              <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Equipo</a></li>
+              <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Carreras</a></li>
+              <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Blog</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-6">
+            <h6 class="fw-bold mb-3">Servicios</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a th:href="@{/reserva/catalogo}" class="text-white-50 text-decoration-none">Catálogo</a></li>
+              <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Precios</a></li>
+              <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Promociones</a></li>
+              <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">FAQs</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <h6 class="fw-bold mb-3">Contacto</h6>
+            <ul class="list-unstyled text-white-50">
+              <li class="mb-2">
+                <i class="bi bi-geo-alt-fill text-orange me-2"></i>
+                Lima, Perú
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-envelope-fill text-orange me-2"></i>
+                contacto@kontrak.pe
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-telephone-fill text-orange me-2"></i>
+                +51 999 888 777
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="border-secondary my-4" />
+
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="text-white-50 mb-0">
+              &copy; 2026 KontraK. Todos los derechos reservados.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <a href="#" class="text-white-50 text-decoration-none me-3">Términos</a>
+            <a href="#" class="text-white-50 text-decoration-none me-3">Privacidad</a>
+            <a href="#" class="text-white-50 text-decoration-none">Cookies</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
