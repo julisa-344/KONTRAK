@@ -4,6 +4,10 @@ Finalizada
 Proyecto:
 AutoRent
 
+Nota de entorno:
+- Dev local usando Neon DB (branch dev)
+- Configuracion por variables de entorno (DATABASE_URL, DB_USERNAME, DB_PASSWORD, PORT)
+- Cloudinary opcional para pruebas locales
 
 Tipo:
 Historia

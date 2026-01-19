@@ -264,6 +264,12 @@ Desarrollar e implementar una plataforma web para la gestión integral de alquil
 - **Servidor Web**: Apache Tomcat (embedded)
 - **Cloud Hosting**: Azure App Service + Azure Database for PostgreSQL
 
+**Entorno de desarrollo local (Neon DB)**:
+- **Branch**: dev (aislada de produccion)
+- **Conexion**: via variables de entorno
+- **Variables necesarias**: DATABASE_URL, DB_USERNAME, DB_PASSWORD, PORT
+- **Notas**: Cloudinary es opcional en desarrollo (se puede dejar en default)
+
 **Componentes Principales**:
 1. **Módulo de Autenticación**: Spring Security con roles (Contratista/Administrador)
 2. **Módulo de Catálogo**: Gestión CRUD de maquinaria y equipos
@@ -660,6 +666,11 @@ El **Producto Mínimo Viable (MVP)** de KontraK debe cumplir con las siguientes 
 16. ⏭️ **Deploy Azure App Service** - Publicar aplicación con URL pública
 17. ⏭️ **Pruebas de aceptación** - UAT con usuarios reales (compañeros/profesor)
 18. ⏭️ **Documentación final** - README técnico y manual de usuario
+
+**Estado actual de entorno dev (Neon DB)**:
+- ✅ Branch `dev` creada para pruebas locales
+- ✅ Conexion por variables de entorno (DATABASE_URL, DB_USERNAME, DB_PASSWORD, PORT)
+- ⚠️ Cloudinary opcional en dev, imagenes pueden quedar con placeholder
 
 ---
 
